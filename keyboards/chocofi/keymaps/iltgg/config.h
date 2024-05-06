@@ -5,7 +5,7 @@
 #define EE_HANDS
 
 #define ONESHOT_TAP_TOGGLE 5
-#define ONESHOT_TIMEOUT 5000
+#define ONESHOT_TIMEOUT 2000
 
 #define MK_3_SPEED
 #define MK_MOMENTARY_ACCEL
