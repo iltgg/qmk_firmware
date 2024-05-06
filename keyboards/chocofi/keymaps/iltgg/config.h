@@ -1,8 +1,8 @@
-/* Select hand configuration */
-
 // #define MASTER_LEFT
 // #define MASTER_RIGHT
 #define EE_HANDS
+
+#define SPLIT_OLED_ENABLE
 
 #define ONESHOT_TAP_TOGGLE 5
 #define ONESHOT_TIMEOUT 2000
