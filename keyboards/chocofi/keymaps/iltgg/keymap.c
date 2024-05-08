@@ -172,8 +172,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 #ifdef OLED_ENABLE
+// Renders current layer and NUM CAPS etc. status
 bool render_status(void) {
-    // Host Keyboard Layer Status
     oled_write_P(PSTR("Layer: "), false);
 
     switch (get_highest_layer(layer_state)) {
@@ -211,11 +211,9 @@ bool render_status(void) {
             oled_write_P(PSTR("GAMING++\n"), false);
             break;
         default:
-            // Or use the write_ln shortcut over adding '\n' to the end of your string
-            oled_write_ln_P(PSTR("Undefined"), false);
+            oled_write_P(PSTR("Undefined\n"), false);
     }
 
-    // Host Keyboard LED Status
     led_t led_state = host_keyboard_led_state();
     oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
     oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
@@ -238,11 +236,15 @@ bool render_logo(void) {
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+        render_status();
     } else {
-        render_logo();  // Renders a static logo
-        // oled_scroll_left();  // Turns on scrolling
+        render_logo();
     }
     return false;
+}
+
+// Turn off OLEDs when computer is off
+void suspend_power_down_user(void) {
+    oled_off();
 }
 #endif
