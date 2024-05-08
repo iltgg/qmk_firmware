@@ -2,8 +2,16 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <stdint.h>
+#include "action.h"
 #include "keymap_us.h"
 #include QMK_KEYBOARD_H
+
+enum custom_keycodes {
+    KC_MS_FL = SAFE_RANGE,
+    KC_MS_FU,
+    KC_MS_FD,
+    KC_MS_FR
+};
 
 enum layer_names {
     _SNTH,
@@ -18,6 +26,15 @@ enum layer_names {
     _GAMING,
     _GAMING_EXTEND
 };
+
+enum direction {
+    LEFT = 0,
+    UP,
+    DOWN,
+    RIGHT
+} typedef direction;
+
+bool fast_mode[] = {false, false, false, false};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Base Layer - SNTH
@@ -78,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     // Mouse Layer
     [8] = LAYOUT_split_3x5_3(
-        KC_NO,   KC_ACL0, KC_ACL1, KC_ACL2, KC_NO,                          KC_NO,         KC_NO,         KC_NO,       KC_NO,          KC_NO,
+        KC_NO,   KC_ACL0, KC_ACL1, KC_ACL2, KC_NO,                          KC_MS_FL,      KC_MS_FD,      KC_MS_FU,    KC_MS_FR,       KC_NO,
         KC_LALT, KC_LGUI, KC_LSFT, KC_LCTL, KC_NO,                          KC_MS_L,       KC_MS_D,       KC_MS_U,     KC_MS_R,        KC_NO,
         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                          KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_UP, KC_MS_WH_RIGHT, KC_NO,
                                    KC_NO,   KC_NO, KC_NO,       KC_MS_BTN2, KC_MS_BTN1,    KC_MS_BTN3
@@ -98,6 +115,61 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                    KC_NO,   KC_NO, KC_NO,                KC_NO, KC_NO,     KC_NO
     ),
 };
+
+void set_fast_mouse(direction key) {
+    fast_mode[key] = true;
+    register_code(KC_ACL2);
+}
+
+void unset_fast_mouse (direction key) {
+    fast_mode[key] = false;
+    if (!fast_mode[0] && !fast_mode[1] && !fast_mode[2] && !fast_mode[3]) {
+        unregister_code(KC_ACL2);
+    }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // Mouse keys that are "fast-mode"
+        case KC_MS_FL:
+            if (record->event.pressed) {
+                set_fast_mouse(LEFT);
+                register_code(KC_MS_L);
+            } else {
+                unset_fast_mouse(LEFT);
+                unregister_code(KC_MS_L);
+            }
+        break;
+        case KC_MS_FU:
+            if (record->event.pressed) {
+                set_fast_mouse(UP);
+                register_code(KC_MS_U);
+            } else {
+                unset_fast_mouse(UP);
+                unregister_code(KC_MS_U);
+            }
+        break;
+        case KC_MS_FD:
+            if (record->event.pressed) {
+                set_fast_mouse(DOWN);
+                register_code(KC_MS_D);
+            } else {
+                unset_fast_mouse(DOWN);
+                unregister_code(KC_MS_D);
+            }
+        break;
+        case KC_MS_FR:
+            if (record->event.pressed) {
+                set_fast_mouse(RIGHT);
+                register_code(KC_MS_R);
+            } else {
+                unset_fast_mouse(RIGHT);
+                unregister_code(KC_MS_R);
+            }
+        break;
+    }
+    return true;
+}
 
 #ifdef OLED_ENABLE
 bool render_status(void) {
