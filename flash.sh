@@ -7,6 +7,10 @@
 # qmk flash -kb chocofi -km iltgg -bl uf2-split-left
 # qmk flash -kb chocofi -km iltgg -bl uf2-split-right
 
+if [[ $1 == "compile" ]]; then
+    qmk compile -c -kb chocofi -km iltgg -e CONVERT_TO=rp2040_ce
+fi
+
 bootloader=$(sudo lsblk -o NAME,LABEL -J | jq ".blockdevices[] | select(.children[0].label == \"RPI-RP2\") | .children[0].name" --raw-output)
 
 if [ -z "$bootloader" ]; then
