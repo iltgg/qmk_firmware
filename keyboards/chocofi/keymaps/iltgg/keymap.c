@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "action.h"
+#include "action_util.h"
 #include "keymap_us.h"
 #include "process_tap_dance.h"
 #include QMK_KEYBOARD_H
@@ -100,9 +101,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                      KC_NO,         KC_NO, KC_NO,     TD(TD_SYM_FUNC), KC_NO, KC_NO
     ),
     [_MOUSE] = LAYOUT_split_3x5_3(
-        KC_NO,   KC_ACL0, KC_ACL1, KC_ACL2,          KC_NO,                          KC_MS_FL,      KC_MS_FD,      KC_MS_FU,    KC_MS_FR,       KC_NO,
-        KC_LALT, KC_LGUI, KC_LSFT, KC_LCTL,          KC_NO,                          KC_MS_L,       KC_MS_D,       KC_MS_U,     KC_MS_R,        KC_NO,
-        KC_NO,   KC_NO,   KC_NO,   KC_NO,            KC_NO,                          KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_UP, KC_MS_WH_RIGHT, KC_NO,
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,            KC_NO,                          KC_MS_FL,      KC_MS_FD,      KC_MS_FU,    KC_MS_FR,       KC_ACL2,
+        KC_LALT, KC_LSFT, KC_LGUI, KC_LCTL,          KC_NO,                          KC_MS_L,       KC_MS_D,       KC_MS_U,     KC_MS_R,        KC_ACL1,
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,            KC_NO,                          KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_UP, KC_MS_WH_RIGHT, KC_ACL0,
                                    TD(TD_EXT_MOUSE), KC_NO, KC_NO,       KC_MS_BTN2, KC_MS_BTN1,    KC_MS_BTN3
     ),
     [_GAMING] = LAYOUT_split_3x5_3(
@@ -228,10 +229,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 #ifdef OLED_ENABLE
-// Renders current layer and NUM CAPS etc. status
 bool render_status(void) {
+    // Layer
     oled_write_P(PSTR("Layer: "), false);
-
     switch (get_highest_layer(layer_state)) {
         case _SNTH:
             oled_write_P(PSTR("SNTH\n"), false);
@@ -273,10 +273,38 @@ bool render_status(void) {
             oled_write_P(PSTR("Undefined\n"), false);
     }
 
+    // CAPS, NUM, and SCRL
     led_t led_state = host_keyboard_led_state();
     oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
     oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
     oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
+    oled_write_P("\n", false);
+
+    // Mods
+    uint8_t mods = get_mods();
+    uint8_t omods = get_oneshot_mods();
+
+    if (mods & MOD_MASK_ALT || omods & MOD_MASK_ALT) {
+        oled_write_P(PSTR("ALT "), false);
+    } else {
+        oled_write_P(PSTR("    "), false);
+    }
+    if (mods & MOD_MASK_SHIFT || omods & MOD_MASK_SHIFT) {
+        oled_write_P(PSTR("SFT "), false);
+    } else {
+        oled_write_P(PSTR("    "), false);
+    }
+    if (mods & MOD_MASK_GUI || omods & MOD_MASK_GUI) {
+        oled_write_P(PSTR("SUP "), false);
+    } else {
+        oled_write_P(PSTR("    "), false);
+    }
+    if (mods & MOD_MASK_CTRL || omods & MOD_MASK_CTRL) {
+        oled_write_P(PSTR("CTR "), false);
+    } else {
+        oled_write_P(PSTR("    "), false);
+    }
+
 
     return false;
 }
@@ -297,13 +325,15 @@ bool oled_task_user(void) {
     if (is_keyboard_master()) {
         render_status();
     } else {
-        render_logo();
+        // render_logo();
+        oled_off();
     }
     return false;
 }
 
 // Turn off OLEDs when computer is off
-void suspend_power_down_user(void) {
-    oled_off();
-}
+// probably need the custom data sync
+// void suspend_power_down_user(void) {
+//     oled_off();
+// }
 #endif
