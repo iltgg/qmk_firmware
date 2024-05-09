@@ -8,6 +8,9 @@
 # qmk flash -kb chocofi -km iltgg -bl uf2-split-right
 
 if [[ $1 == "compile" ]]; then
+    qmk compile -kb chocofi -km iltgg -e CONVERT_TO=rp2040_ce
+fi
+if [[ $1 == "clean_compile" ]]; then
     qmk compile -c -kb chocofi -km iltgg -e CONVERT_TO=rp2040_ce
 fi
 
