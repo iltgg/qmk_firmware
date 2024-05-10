@@ -7,18 +7,32 @@
 # qmk flash -kb chocofi -km iltgg -bl uf2-split-left
 # qmk flash -kb chocofi -km iltgg -bl uf2-split-right
 
+retVal=0
 if [[ $1 == "compile" ]]; then
     qmk compile -kb chocofi -km iltgg -e CONVERT_TO=rp2040_ce
+    retVal=$?
 fi
 if [[ $1 == "clean_compile" ]]; then
     qmk compile -c -kb chocofi -km iltgg -e CONVERT_TO=rp2040_ce
+    retVal=$?
 fi
 
-bootloader=$(sudo lsblk -o NAME,LABEL -J | jq ".blockdevices[] | select(.children[0].label == \"RPI-RP2\") | .children[0].name" --raw-output)
+if [ $retVal -ne 0 ]; then
+    echo "ERROR: Compilation Failed"
+    exit $retVal
+fi
+
+for ((i = 0; i < 5; i++)); do
+    echo "Searching for bootloader $((i+1))/5"
+    bootloader=$(sudo lsblk -o NAME,LABEL -J | jq ".blockdevices[] | select(.children[0].label == \"RPI-RP2\") | .children[0].name" --raw-output)
+    if [ -z "$bootloader" ]; then
+        sleep 2
+    fi
+done
 
 if [ -z "$bootloader" ]; then
     echo "ERROR: bootloader not found"
-    exit
+    exit 1
 fi
 
 echo "MOUNTING BOOTLOADER"
