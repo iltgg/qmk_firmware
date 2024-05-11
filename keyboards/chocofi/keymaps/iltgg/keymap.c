@@ -18,7 +18,9 @@ enum custom_keycodes {
 enum {
     TD_EXT_MOUSE,
     TD_SYM_FUNC,
-    TD_NUM_PAD
+    TD_NUM_PAD,
+    TD_SHIFT_CTRL,
+    TD_SHIFT_CTRL_Q
 };
 
 enum layer_names {
@@ -26,6 +28,8 @@ enum layer_names {
     _QWERTY,         // For historical reasons
     _SHIFT,          // Shifted base
     _QWERTY_SHIFT,   // Shifted QWERTY
+    _CTRL,           // "Controlled" base
+    _QWERTY_CTRL,    // "Controlled" QWERTY
     _EXTEND,         // Navigation, utility, and mods
     _SYMBOL,         // Symbols
     _NUMBER,         // Numbers
@@ -47,28 +51,40 @@ bool fast_mode[] = {false, false, false, false};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SNTH] = LAYOUT_split_3x5_3(
-        KC_X,    KC_P,    KC_D,    KC_M,    KC_Q,                                    KC_QUOT, KC_Y,    KC_O,    KC_U,    KC_SCLN,
-        KC_S,    KC_N,    KC_T,    KC_H,    KC_V,                                    KC_G,    KC_C,    KC_A,    KC_E,    KC_I,
-        KC_F,    KC_B,    KC_K,    KC_L,    KC_J,                                    KC_Z,    KC_W,    KC_COMM, KC_DOT,  KC_SLSH,
-                       TD(TD_EXT_MOUSE),    KC_R, TD(TD_NUM_PAD),      TD(TD_SYM_FUNC), KC_SPC,  MO(_SHIFT)
+        KC_X,    KC_P,    KC_D,    KC_M,    KC_Q,                                       KC_MINUS, KC_Y,    KC_O,    KC_U,    KC_QUOT,
+        KC_S,    KC_N,    KC_T,    KC_H,    KC_V,                                       KC_G,     KC_C,    KC_A,    KC_E,    KC_I,
+        KC_F,    KC_B,    KC_K,    KC_L,    KC_J,                                       KC_Z,     KC_W,    KC_COMM, KC_DOT,  KC_SLSH,
+                       TD(TD_EXT_MOUSE),    KC_R, TD(TD_NUM_PAD),      TD(TD_SYM_FUNC), KC_SPC,   TD(TD_SHIFT_CTRL)
     ),
     [_QWERTY] = LAYOUT_split_3x5_3(
-        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
-        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-                       TD(TD_EXT_MOUSE),    KC_NO, TD(TD_NUM_PAD),     TD(TD_SYM_FUNC), KC_SPC,  MO(_QWERTY_SHIFT)
+        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
+        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
+        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
+                       TD(TD_EXT_MOUSE),    KC_NO, TD(TD_NUM_PAD),       TD(TD_SYM_FUNC), KC_SPC,  TD(TD_SHIFT_CTRL_Q)
     ),
     [_SHIFT] = LAYOUT_split_3x5_3(
-        S(KC_X),    S(KC_P),    S(KC_D),    S(KC_M),    S(KC_Q),                        S(KC_QUOT), S(KC_Y),    S(KC_O),    S(KC_U),    S(KC_SCLN),
-        S(KC_S),    S(KC_N),    S(KC_T),    S(KC_H),    S(KC_V),                        S(KC_G),    S(KC_C),    S(KC_A),    S(KC_E),    S(KC_I),
-        S(KC_F),    S(KC_B),    S(KC_K),    S(KC_L),    S(KC_J),                        S(KC_Z),    S(KC_W),    S(KC_COMM), S(KC_DOT),  S(KC_SLSH),
-                                            C(KC_BSPC), S(KC_R), KC_BSPC,        KC_NO, KC_NO,      KC_NO
+        S(KC_X),    S(KC_P),    S(KC_D),    S(KC_M),    S(KC_Q),                        S(KC_MINUS), S(KC_Y),    S(KC_O),    S(KC_U),    S(KC_QUOT),
+        S(KC_S),    S(KC_N),    S(KC_T),    S(KC_H),    S(KC_V),                        S(KC_G),     S(KC_C),    S(KC_A),    S(KC_E),    S(KC_I),
+        S(KC_F),    S(KC_B),    S(KC_K),    S(KC_L),    S(KC_J),                        S(KC_Z),     S(KC_W),    S(KC_COMM), S(KC_DOT),  S(KC_SLSH),
+                                            KC_DEL,     S(KC_R), KC_BSPC,        KC_NO, KC_NO,       TD(TD_SHIFT_CTRL)
     ),
     [_QWERTY_SHIFT] = LAYOUT_split_3x5_3(
-        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
-        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-                                C(KC_BSPC), KC_NO, KC_BSPC,              KC_NO, KC_NO,  KC_NO
+        S(KC_Q),    S(KC_W),    S(KC_E),    S(KC_R),    S(KC_T),                        S(KC_Y),    S(KC_U),    S(KC_I),    S(KC_O),    S(KC_P),
+        S(KC_A),    S(KC_S),    S(KC_D),    S(KC_F),    S(KC_G),                        S(KC_H),    S(KC_J),    S(KC_K),    S(KC_L),    S(KC_SCLN),
+        S(KC_Z),    S(KC_X),    S(KC_C),    S(KC_V),    S(KC_B),                        S(KC_N),    S(KC_M),    S(KC_COMM), S(KC_DOT),  S(KC_SLSH),
+                                            KC_DEL,     KC_NO,   KC_BSPC,        KC_NO, KC_NO,      TD(TD_SHIFT_CTRL_Q)
+    ),
+    [_CTRL] = LAYOUT_split_3x5_3(
+        C(KC_X),    C(KC_P),    C(KC_D),    C(KC_M),    C(KC_Q),                        KC_NO,      C(KC_Y),    C(KC_O),    C(KC_U),    C(KC_QUOT),
+        C(KC_S),    C(KC_N),    C(KC_T),    C(KC_H),    C(KC_V),                        C(KC_G),    C(KC_C),    C(KC_A),    C(KC_E),    C(KC_I),
+        C(KC_F),    C(KC_B),    C(KC_K),    C(KC_L),    C(KC_J),                        C(KC_Z),    C(KC_W),    C(KC_COMM), C(KC_DOT),  C(KC_SLSH),
+                                            C(KC_DEL),  C(KC_R), C(KC_BSPC),     KC_NO, KC_NO,      TD(TD_SHIFT_CTRL)
+    ),
+    [_QWERTY_CTRL] = LAYOUT_split_3x5_3(
+        C(KC_Q),    C(KC_W),    C(KC_E),    C(KC_R),    C(KC_T),                        C(KC_Y),    C(KC_U),    C(KC_I),    C(KC_O),    C(KC_P),
+        C(KC_A),    C(KC_S),    C(KC_D),    C(KC_F),    C(KC_G),                        C(KC_H),    C(KC_J),    C(KC_K),    C(KC_L),    C(KC_SCLN),
+        C(KC_Z),    C(KC_X),    C(KC_C),    C(KC_V),    C(KC_B),                        C(KC_N),    C(KC_M),    C(KC_COMM), C(KC_DOT),  C(KC_SLSH),
+                                            C(KC_DEL),  KC_NO,   C(KC_BSPC),     KC_NO, KC_NO,      TD(TD_SHIFT_CTRL_Q)
     ),
     [_EXTEND] = LAYOUT_split_3x5_3(
         OSM(MOD_RALT), OSM(MOD_RSFT), OSM(MOD_RGUI), OSM(MOD_RCTL),    KC_LALT,                                 KC_HOME, KC_PGDN,  KC_PGUP,  KC_END,    KC_CAPS,
@@ -77,22 +93,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                      TD(TD_EXT_MOUSE), KC_NO,         KC_NO,           KC_ESC,  KC_ENT,  KC_TAB
     ),
     [_SYMBOL] = LAYOUT_split_3x5_3(
-        KC_EXLM,       KC_AT,         KC_HASH,       KC_DLR,        KC_PERC,                              KC_EQL,  KC_GRV,  KC_DQUO, KC_QUOT, KC_MINUS,
-        OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL), KC_CIRC,                              KC_ASTR, KC_LPRN, KC_LCBR, KC_LBRC, KC_UNDS,
-        KC_NO,         KC_NO,         KC_BSLS,       KC_PIPE,       KC_AMPR,                              KC_TILD, KC_RPRN, KC_RCBR, KC_RBRC, KC_PLUS,
-                                                     KC_SCLN,       KC_COLN,   KC_NO,    TD(TD_SYM_FUNC), KC_NO,   KC_NO
+        KC_EXLM,       KC_AT,         KC_HASH,       KC_DLR,        KC_PERC,                               KC_EQL,  KC_GRV,  KC_AMPR, KC_PIPE, KC_MINUS,
+        OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL), KC_CIRC,                               KC_ASTR, KC_LPRN, KC_LCBR, KC_LBRC, KC_UNDS,
+        KC_NO,         KC_NO,         KC_NO,         KC_NO,         KC_NO,                                 KC_TILD, KC_RPRN, KC_RCBR, KC_RBRC, KC_PLUS,
+                                                     KC_SCLN,       KC_COLN,   KC_BSLS,   TD(TD_SYM_FUNC), KC_NO,   KC_NO
     ),
     [_NUMBER] = LAYOUT_split_3x5_3(
         KC_NO,         KC_NO,         KC_COMM,       KC_DOT,        KC_NUM,                                    KC_EQL,  KC_7, KC_8, KC_9, KC_MINUS,
         OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL), OSM(MOD_RALT),                             KC_ASTR, KC_4, KC_5, KC_6, KC_PLUS,
-        KC_NO,         KC_NO,        KC_TAB,         KC_ENT,        KC_NO,                                     KC_0,    KC_1, KC_2, KC_3, KC_SLSH,
-                                                     KC_NO,         KC_NO,         TD(TD_NUM_PAD),    KC_BSPC, KC_SPC,  KC_NO
+        KC_DOWN,       KC_UP,         KC_NO,         KC_ENT,        KC_NO,                                     KC_0,    KC_1, KC_2, KC_3, KC_SLSH,
+                                                     KC_NO,         KC_NO,         TD(TD_NUM_PAD),    KC_BSPC, KC_SPC,  KC_TAB
     ),
     [_NUMPAD] = LAYOUT_split_3x5_3(
         KC_NO,         KC_NO,         KC_PCMM,       KC_PDOT,       KC_NUM,                                    KC_PEQL, KC_P7, KC_P8, KC_P9, KC_PMNS,
         OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL), OSM(MOD_RALT),                             KC_PAST, KC_P4, KC_P5, KC_P6, KC_PPLS,
-        KC_NO,         KC_NO,         KC_TAB,        KC_PENT,       KC_NO,                                     KC_P0,   KC_P1, KC_P2, KC_P3, KC_PSLS,
-                                                     KC_NO,         KC_NO,         TD(TD_NUM_PAD),    KC_BSPC, KC_SPC,  KC_NO
+        KC_NO,         KC_NO,         KC_NO,         KC_PENT,       KC_NO,                                     KC_P0,   KC_P1, KC_P2, KC_P3, KC_PSLS,
+                                                     KC_NO,         KC_NO,         TD(TD_NUM_PAD),    KC_BSPC, KC_SPC,  KC_TAB
     ),
     [_FUNCTION] = LAYOUT_split_3x5_3(
         KC_NO,         KC_NO,         KC_NO,         KC_NO,         KC_NO,                             KC_F1, KC_F2,  KC_F3,  KC_F4,  KC_SCRL,
@@ -166,11 +182,43 @@ void dance_num_pad_reset(tap_dance_state_t *state, void *user_data) {
     layer_off(_NUMPAD);
 }
 
+void dance_shift_ctrl_each(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            layer_on(_SHIFT);
+            break;
+        case 2:
+            layer_on(_CTRL);
+    }
+}
+
+void dance_shift_ctrl_reset(tap_dance_state_t *state, void *user_data) {
+    layer_off(_SHIFT);
+    layer_off(_CTRL);
+}
+
+void dance_shift_ctrl_each_Q(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            layer_on(_QWERTY_SHIFT);
+            break;
+        case 2:
+            layer_on(_QWERTY_CTRL);
+    }
+}
+
+void dance_shift_ctrl_reset_Q(tap_dance_state_t *state, void *user_data) {
+    layer_off(_QWERTY_SHIFT);
+    layer_off(_QWERTY_CTRL);
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Single tap moves to extend, double moves to mouse with no delay
     [TD_EXT_MOUSE] = ACTION_TAP_DANCE_FN_ADVANCED(dance_ext_mouse_each, NULL, dance_ext_mouse_reset),
     [TD_SYM_FUNC] = ACTION_TAP_DANCE_FN_ADVANCED(dance_sym_func_each, NULL, dance_sym_func_reset),
-    [TD_NUM_PAD] = ACTION_TAP_DANCE_FN_ADVANCED(dance_num_pad_each, NULL, dance_num_pad_reset)
+    [TD_NUM_PAD] = ACTION_TAP_DANCE_FN_ADVANCED(dance_num_pad_each, NULL, dance_num_pad_reset),
+    [TD_SHIFT_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(dance_shift_ctrl_each, NULL, dance_shift_ctrl_reset),
+    [TD_SHIFT_CTRL_Q] = ACTION_TAP_DANCE_FN_ADVANCED(dance_shift_ctrl_each_Q, NULL, dance_shift_ctrl_reset_Q),
 };
 
 void set_fast_mouse(direction key) {
@@ -231,7 +279,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef OLED_ENABLE
 bool render_status(void) {
     // Layer
-    oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
         case _SNTH:
             oled_write_P(PSTR("SNTH\n"), false);
@@ -244,6 +291,12 @@ bool render_status(void) {
             break;
         case _QWERTY_SHIFT:
             oled_write_P(PSTR("QWERTY_SHIFT\n"), false);
+            break;
+        case _CTRL:
+            oled_write_P(PSTR("CONTROl\n"), false);
+            break;
+        case _QWERTY_CTRL:
+            oled_write_P(PSTR("QWERTY_CONTROL\n"), false);
             break;
         case _EXTEND:
             oled_write_P(PSTR("EXTEND\n"), false);
