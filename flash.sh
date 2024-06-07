@@ -27,6 +27,8 @@ for ((i = 0; i < 5; i++)); do
     bootloader=$(sudo lsblk -o NAME,LABEL -J | jq ".blockdevices[] | select(.children[0].label == \"RPI-RP2\") | .children[0].name" --raw-output)
     if [ -z "$bootloader" ]; then
         sleep 2
+    else
+        break
     fi
 done
 
@@ -51,3 +53,5 @@ while lsusb | grep "Raspberry Pi RP2 Boot" > /dev/null; do
 done
 
 echo "FLASHING COMPLETE"
+
+sudo umount /run/media/$USER/RPI-RP2/

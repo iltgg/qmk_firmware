@@ -4,7 +4,7 @@
 
 #define SPLIT_OLED_ENABLE
 
-#define ONESHOT_TAP_TOGGLE 5
+#define ONESHOT_TAP_TOGGLE 3
 #define ONESHOT_TIMEOUT 2000
 
 #define MK_3_SPEED
