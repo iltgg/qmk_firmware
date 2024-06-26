@@ -62,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
-                       TD(TD_EXT_MOUSE),    KC_NO, TD(TD_NUM_PAD),       TD(TD_SYM_FUNC), KC_SPC,  TD(TD_SHIFT_CTRL_Q)
+                       TD(TD_EXT_MOUSE),    KC_SPC, TD(TD_NUM_PAD),      TD(TD_SYM_FUNC), KC_SPC,  TD(TD_SHIFT_CTRL_Q)
     ),
     [_SHIFT] = LAYOUT_split_3x5_3(
         S(KC_X),    S(KC_P),    S(KC_D),    S(KC_M),    S(KC_Q),                        S(KC_MINUS), S(KC_Y),    S(KC_O),    S(KC_U),    S(KC_QUOT),
@@ -89,15 +89,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                             KC_NO,      KC_NO,   KC_NO,          KC_NO, KC_NO,      TD(TD_SHIFT_CTRL_Q)
     ),
     [_EXTEND] = LAYOUT_split_3x5_3(
-        OSM(MOD_RALT), OSM(MOD_RSFT), OSM(MOD_RGUI), OSM(MOD_RCTL),    KC_LALT,                                 KC_HOME, KC_PGDN,  KC_PGUP,    KC_END,    KC_CAPS,
-        OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL),    OSM(MOD_RALT),                           KC_LEFT, KC_DOWN,  KC_UP,      KC_RIGHT,  KC_CLEAR_OSM,
-        C(KC_Z),       C(KC_X),       C(KC_C),       C(KC_V),          KC_LGUI,                                 KC_NO,   KC_NO,    KC_NO,      KC_INS,    KC_PSCR,
+        G(KC_1),       G(KC_2),       G(KC_3),       G(KC_4),          G(KC_5),                                 KC_HOME, KC_PGDN,  KC_PGUP,    KC_END,    KC_CAPS,
+        OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL),    G(KC_N),                                 KC_LEFT, KC_DOWN,  KC_UP,      KC_RIGHT,  KC_CLEAR_OSM,
+        C(KC_Z),       C(KC_X),       C(KC_C),       C(KC_V),          C(KC_Y),                                 KC_NO,   KC_NO,    KC_NO,      KC_INS,    KC_PSCR,
                                                      TD(TD_EXT_MOUSE), KC_NO,         KC_NO,            KC_ESC, KC_ENT,  KC_TAB
     ),
     [_SYMBOL] = LAYOUT_split_3x5_3(
-        KC_EXLM,       KC_AT,         KC_HASH,       KC_DLR,        KC_PERC,                               KC_EQL,  KC_GRV,  KC_AMPR, KC_PIPE, KC_MINUS,
-        OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL), KC_CIRC,                               KC_ASTR, KC_LPRN, KC_LCBR, KC_LBRC, KC_UNDS,
-        KC_NO,         KC_NO,         KC_NO,         KC_NO,         KC_NO,                                 KC_TILD, KC_RPRN, KC_RCBR, KC_RBRC, KC_PLUS,
+        KC_EXLM,       KC_AT,         KC_HASH,       KC_DLR,        KC_NO,                                 KC_NO,   KC_EQL,  KC_AMPR, KC_PIPE, KC_MINUS,
+        OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL), KC_NO,                                 KC_ASTR, KC_LPRN, KC_LCBR, KC_LBRC, KC_UNDS,
+        KC_PERC,       KC_CIRC,       KC_GRV,        KC_TILD,       KC_NO,                                 KC_NO,   KC_RPRN, KC_RCBR, KC_RBRC, KC_PLUS,
                                                      KC_SCLN,       KC_COLN,   KC_BSLS,   TD(TD_SYM_FUNC), KC_NO,   KC_NO
     ),
     [_NUMBER] = LAYOUT_split_3x5_3(
