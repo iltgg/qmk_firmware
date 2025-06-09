@@ -26,8 +26,8 @@ enum {
 };
 
 enum layer_names {
-    _QWERTY,         // Base
-    _SNTH,           // Alt layout
+    _SNTH,           // Base layer
+    _QWERTY,         // For historical reasons
     _SHIFT,          // Shifted base
     _QWERTY_SHIFT,   // Shifted QWERTY
     _CTRL,           // "Controlled" base
@@ -53,35 +53,17 @@ enum direction {
 bool fast_mode[] = {false, false, false, false};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_SNTH] = LAYOUT_split_3x5_3(
-        KC_X,    KC_P,    KC_D,    KC_M,    KC_Q,                                       KC_MINUS, KC_Y,    KC_O,    KC_U,    KC_QUOT,
-        KC_S,    KC_N,    KC_T,    KC_H,    KC_V,                                       KC_G,     KC_C,    KC_A,    KC_E,    KC_I,
-        KC_F,    KC_B,    KC_K,    KC_L,    KC_J,                                       KC_Z,     KC_W,    KC_COMM, KC_DOT,  KC_SLSH,
-                       TD(TD_EXT_MOUSE),    KC_R, TD(TD_NUM_MACRO),    TD(TD_SYM_FUNC), KC_SPC,   TD(TD_SHIFT_CTRL)
-    ),
     [_QWERTY] = LAYOUT_split_3x5_3(
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                         KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,
                        TD(TD_EXT_MOUSE),    KC_SPC, TD(TD_NUM_MACRO),    TD(TD_SYM_FUNC), KC_SPC,  TD(TD_SHIFT_CTRL_Q)
     ),
-    [_SHIFT] = LAYOUT_split_3x5_3(
-        S(KC_X),    S(KC_P),    S(KC_D),    S(KC_M),    S(KC_Q),                        S(KC_MINUS), S(KC_Y),    S(KC_O),    S(KC_U),    S(KC_QUOT),
-        S(KC_S),    S(KC_N),    S(KC_T),    S(KC_H),    S(KC_V),                        S(KC_G),     S(KC_C),    S(KC_A),    S(KC_E),    S(KC_I),
-        S(KC_F),    S(KC_B),    S(KC_K),    S(KC_L),    S(KC_J),                        S(KC_Z),     S(KC_W),    S(KC_COMM), S(KC_DOT),  S(KC_SLSH),
-                                            KC_DEL,     S(KC_R), KC_BSPC,        KC_NO, KC_NO,       TD(TD_SHIFT_CTRL)
-    ),
     [_QWERTY_SHIFT] = LAYOUT_split_3x5_3(
         S(KC_Q),    S(KC_W),    S(KC_E),    S(KC_R),    S(KC_T),                        S(KC_Y),    S(KC_U),    S(KC_I),    S(KC_O),    S(KC_P),
         S(KC_A),    S(KC_S),    S(KC_D),    S(KC_F),    S(KC_G),                        S(KC_H),    S(KC_J),    S(KC_K),    S(KC_L),    S(KC_SCLN),
         S(KC_Z),    S(KC_X),    S(KC_C),    S(KC_V),    S(KC_B),                        S(KC_N),    S(KC_M),    S(KC_COMM), S(KC_DOT),  S(KC_SLSH),
                                             KC_DEL,     KC_NO,   KC_BSPC,        KC_NO, KC_NO,      TD(TD_SHIFT_CTRL_Q)
-    ),
-    [_CTRL] = LAYOUT_split_3x5_3(
-        C(KC_X),    C(KC_P),    C(KC_D),    C(KC_M),    C(KC_Q),                        KC_NO,      C(KC_Y),    C(KC_O),    C(KC_U),    C(KC_QUOT),
-        C(KC_S),    C(KC_N),    C(KC_T),    C(KC_H),    C(KC_V),                        C(KC_G),    C(KC_C),    C(KC_A),    C(KC_E),    C(KC_I),
-        C(KC_F),    C(KC_B),    C(KC_K),    C(KC_L),    C(KC_J),                        C(KC_Z),    C(KC_W),    C(KC_COMM), C(KC_DOT),  C(KC_SLSH),
-                                            C(KC_DEL),  C(KC_R), C(KC_BSPC),     KC_NO, KC_NO,      TD(TD_SHIFT_CTRL)
     ),
     [_QWERTY_CTRL] = LAYOUT_split_3x5_3(
         C(KC_Q),    C(KC_W),    C(KC_E),    C(KC_R),    C(KC_T),                        C(KC_Y),    C(KC_U),    C(KC_I),    C(KC_O),    C(KC_P),
@@ -105,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LEFT,       KC_RIGHT,      KC_NO,         KC_COMM,       KC_NUM,                                    KC_EQL,  KC_7, KC_8, KC_9, KC_MINUS,
         OSM(MOD_LALT), OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LCTL), KC_NO,                                     KC_ASTR, KC_4, KC_5, KC_6, KC_PLUS,
         KC_DOWN,       KC_UP,         KC_NO,         KC_NO,         KC_NO,                                     KC_SPC,  KC_1, KC_2, KC_3, KC_SLSH,
-                                                     MO(_NUMPAD),   KC_NO,    TD(TD_NUM_MACRO),       KC_BSPC, KC_0,    KC_DOT
+                                                     MO(_NUMPAD),   KC_NO,         TD(TD_NUM_MACRO),    KC_BSPC, KC_0,    KC_DOT
     ),
     [_NUMPAD] = LAYOUT_split_3x5_3(
         KC_LEFT,       KC_RIGHT,      KC_NO,         KC_PCMM,       KC_NUM,                                    KC_PEQL, KC_P7, KC_P8, KC_P9, KC_PMNS,
